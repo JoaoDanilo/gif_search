@@ -29,9 +29,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _getGifs().then((map) {
-      print(map);
-    });
+    // _getGifs().then((map) {
+    //   print(map);
+    // });
   }
 
   Widget searchWidget() {
@@ -49,10 +49,44 @@ class _HomePageState extends State<HomePage> {
             );
   }
 
+  Widget gridGid(){
+    return Expanded(
+      child: FutureBuilder(
+        future: _getGifs(),
+        builder: (context, snapshot){
+          
+          switch(snapshot.connectionState){            
+            case ConnectionState.none:              
+            case ConnectionState.waiting:
+              return Container(
+                width: 200,
+                height: 200,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: 5,
+                ),
+              );
+            default:
+              if(snapshot.hasError) 
+                return Container();
+              else 
+                return _createGifTable(context, snapshot);
+          }          
+        },
+      ),
+    );
+  }
+
+  Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot){
+
+  }
+
   Column col() {
     return Column(
       children: <Widget>[
-        searchWidget()
+        searchWidget(),
+        gridGid()
       ],
     );
   }

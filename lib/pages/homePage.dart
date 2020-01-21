@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gif_search/pages/gifPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -95,8 +96,7 @@ class _HomePageState extends State<HomePage> {
                     ),
       itemCount: _getCount(snapshot.data["data"]),
       itemBuilder: (context, index){
-        print(_search);
-        print(index < snapshot.data["data"].length);
+       
         if(_search == null || index < snapshot.data["data"].length){
           return  GestureDetector(
                     child:  Image.network(
@@ -104,6 +104,9 @@ class _HomePageState extends State<HomePage> {
                               height: 300,
                               fit: BoxFit.cover,                          
                             ),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GifPage(snapshot.data["data"][index])));
+                    },
                   );
         }
         else{         
